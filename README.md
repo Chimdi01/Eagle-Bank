@@ -175,7 +175,7 @@ curl -X DELETE http://localhost:8080/v1/accounts/01000001 \
 ## Project Structure
 - `src/main/java/org/banking/service/` - Main source code
 - `src/test/java/org/banking/service/` - Test suite
-- `openapi.yaml` - OpenAPI spec (if provided)
+- `openapi.yaml` - OpenAPI spec
 
 ---
 
@@ -186,5 +186,5 @@ curl -X DELETE http://localhost:8080/v1/accounts/01000001 \
 
 ---
 
-**Author:** [Your Name]
-**License:** MIT (or specify) 
+**Author:** David Ozoude
+**License:** MIT
