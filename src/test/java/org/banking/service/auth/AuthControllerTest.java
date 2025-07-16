@@ -1,11 +1,8 @@
 package org.banking.service.auth;
 
-import org.banking.service.model.LoginRequest;
-import org.banking.service.model.LoginResponse;
+import org.banking.service.controller.AuthController;
 import org.banking.service.model.UserResponse;
-import org.banking.service.model.ErrorResponse;
-import org.banking.service.model.BadRequestErrorResponse;
-import org.banking.service.user.UserService;
+import org.banking.service.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

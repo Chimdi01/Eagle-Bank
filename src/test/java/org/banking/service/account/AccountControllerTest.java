@@ -1,6 +1,8 @@
 package org.banking.service.account;
 
+import org.banking.service.controller.AccountController;
 import org.banking.service.model.*;
+import org.banking.service.service.AccountService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -82,6 +84,17 @@ public class AccountControllerTest {
     }
 
     @Test
+    void testCreateAccount_invalidAccountType() throws Exception {
+        mockMvc.perform(post("/v1/accounts")
+                .header("Authorization", getAuthHeader())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\":\"Test Account\",\"accountType\":\"business\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.details[0].field").value("accountType"))
+                .andExpect(jsonPath("$.details[0].message").value("Invalid accountType: only 'personal' is allowed"));
+    }
+
+    @Test
     void testListAccounts() throws Exception {
         ListBankAccountsResponse resp = new ListBankAccountsResponse();
         resp.setAccounts(java.util.Collections.emptyList());
@@ -132,6 +145,16 @@ public class AccountControllerTest {
                 .content("{\"name\":\"Updated\"}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("Updated"));
+    }
+
+    @Test
+    void testUpdateAccount_invalidAccountType() throws Exception {
+        mockMvc.perform(patch("/v1/accounts/01000001")
+                .header("Authorization", getAuthHeader())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"accountType\":\"business\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Invalid accountType: only 'personal' is allowed"));
     }
 
     @Test

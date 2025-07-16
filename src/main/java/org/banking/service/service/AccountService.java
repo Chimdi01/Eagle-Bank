@@ -1,4 +1,4 @@
-package org.banking.service.account;
+package org.banking.service.service;
 
 import org.banking.service.model.*;
 

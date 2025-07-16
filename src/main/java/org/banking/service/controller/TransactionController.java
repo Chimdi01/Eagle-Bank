@@ -1,15 +1,16 @@
-package org.banking.service.transactions;
+package org.banking.service.controller;
 
 import org.banking.service.model.*;
-import org.banking.service.transactions.TransactionService;
+import org.banking.service.service.TransactionService;
 import org.banking.service.util.ValidationUtil;
-import org.banking.service.account.AccountService;
+import org.banking.service.service.AccountService;
 import org.banking.service.util.ErrorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 
 /**
@@ -48,16 +49,7 @@ public class TransactionController {
                 ErrorResponse error = ErrorUtil.error("Forbidden: You can only transact on your own bank account");
                 return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
             }
-            java.util.List<org.banking.service.model.BadRequestErrorResponse.Detail> details = ErrorUtil.details();
-            if (request.getAmount() == null || request.getAmount() <= 0) {
-                details.add(ErrorUtil.detail("amount", "Missing or invalid required field: amount", "missing"));
-            }
-            if (request.getCurrency() == null || !"GBP".equals(request.getCurrency())) {
-                details.add(ErrorUtil.detail("currency", "Missing or invalid required field: currency", "missing"));
-            }
-            if (request.getType() == null || !("deposit".equalsIgnoreCase(request.getType()) || "withdrawal".equalsIgnoreCase(request.getType()))) {
-                details.add(ErrorUtil.detail("type", "Missing or invalid required field: type", "missing"));
-            }
+            List<BadRequestErrorResponse.Detail> details = ValidationUtil.validateCreateTransactionRequestAll(request);
             if (!details.isEmpty()) {
                 return new ResponseEntity<>(ErrorUtil.badRequest("Invalid details supplied", details), HttpStatus.BAD_REQUEST);
             }
@@ -68,10 +60,10 @@ public class TransactionController {
                     return new ResponseEntity<>(error, HttpStatus.UNPROCESSABLE_ENTITY);
                 }
                 account.setBalance(account.getBalance() - amount);
-                account.setUpdatedTimestamp(java.time.OffsetDateTime.now());
+                account.setUpdatedTimestamp(OffsetDateTime.now());
             } else if ("deposit".equalsIgnoreCase(request.getType())) {
                 account.setBalance(account.getBalance() + amount);
-                account.setUpdatedTimestamp(java.time.OffsetDateTime.now());
+                account.setUpdatedTimestamp(OffsetDateTime.now());
             }
         } catch (IllegalArgumentException ex) {
             String msg = ex.getMessage();
@@ -87,7 +79,7 @@ public class TransactionController {
                 else if (msg.contains("type")) field = "type";
                 BadRequestErrorResponse error = ErrorUtil.badRequest(
                     msg,
-                    java.util.List.of(ErrorUtil.detail(field, msg, "pattern"))
+                    List.of(ErrorUtil.detail(field, msg, "pattern"))
                 );
                 return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
             }

@@ -1,4 +1,4 @@
-package org.banking.service.auth;
+package org.banking.service.controller;
 
 import org.banking.service.model.LoginRequest;
 import org.banking.service.model.LoginResponse;
@@ -8,7 +8,7 @@ import org.banking.service.util.ValidationUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.banking.service.user.UserService;
+import org.banking.service.service.UserService;
 import org.banking.service.model.ErrorResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 

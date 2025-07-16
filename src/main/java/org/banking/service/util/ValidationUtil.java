@@ -1,6 +1,10 @@
 package org.banking.service.util;
 
 import java.util.regex.Pattern;
+import org.banking.service.model.BadRequestErrorResponse;
+import org.banking.service.model.CreateTransactionRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Utility class for validating user, account, and transaction data formats.
@@ -123,7 +127,6 @@ public class ValidationUtil {
         if (request == null) throw new IllegalArgumentException("Request body is missing");
         if (request.getPhoneNumber() != null) validatePhoneNumber(request.getPhoneNumber());
         if (request.getEmail() != null) validateEmail(request.getEmail());
-        // Optionally, validate address fields if present
         if (request.getAddress() != null) {
             org.banking.service.model.UpdateUserRequest.Address addr = request.getAddress();
             if (addr.getLine1() != null && addr.getLine1().trim().isEmpty()) {
@@ -186,6 +189,8 @@ public class ValidationUtil {
         }
         if (request.getAccountType() != null && request.getAccountType().trim().isEmpty()) {
             throw new IllegalArgumentException("accountType cannot be empty");
+        } else if (request.getAccountType() != null && !"personal".equalsIgnoreCase(request.getAccountType())) {
+            throw new IllegalArgumentException("Invalid accountType: only 'personal' is allowed");
         }
     }
 
@@ -205,6 +210,31 @@ public class ValidationUtil {
         }
         if (request.getAccountType() == null || request.getAccountType().trim().isEmpty()) {
             details.add(new org.banking.service.model.BadRequestErrorResponse.Detail("accountType", "Missing required field: accountType", "pattern"));
+        } else if (!"personal".equalsIgnoreCase(request.getAccountType())) {
+            details.add(new org.banking.service.model.BadRequestErrorResponse.Detail("accountType", "Invalid accountType: only 'personal' is allowed", "pattern"));
+        }
+        return details;
+    }
+
+    /**
+     * Validates a CreateTransactionRequest for required fields and returns a list of error details for all missing/invalid fields.
+     * @param request the CreateTransactionRequest to validate
+     * @return a list of BadRequestErrorResponse.Detail for all missing/invalid fields
+     */
+    public static List<BadRequestErrorResponse.Detail> validateCreateTransactionRequestAll(CreateTransactionRequest request) {
+        List<BadRequestErrorResponse.Detail> details = new ArrayList<>();
+        if (request == null) {
+            details.add(new BadRequestErrorResponse.Detail("request", "Request body is missing", "pattern"));
+            return details;
+        }
+        if (request.getAmount() == null || request.getAmount() <= 0) {
+            details.add(new BadRequestErrorResponse.Detail("amount", "Missing or invalid required field: amount", "missing"));
+        }
+        if (request.getCurrency() == null || !"GBP".equals(request.getCurrency())) {
+            details.add(new BadRequestErrorResponse.Detail("currency", "Missing or invalid required field: currency", "missing"));
+        }
+        if (request.getType() == null || !("deposit".equalsIgnoreCase(request.getType()) || "withdrawal".equalsIgnoreCase(request.getType()))) {
+            details.add(new BadRequestErrorResponse.Detail("type", "Missing or invalid required field: type", "missing"));
         }
         return details;
     }

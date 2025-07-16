@@ -1,6 +1,8 @@
 package org.banking.service.user;
 
+import org.banking.service.controller.UserController;
 import org.banking.service.model.*;
+import org.banking.service.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -12,7 +14,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import org.banking.service.util.JwtUtil;
-import org.banking.service.account.AccountService;
+import org.banking.service.service.AccountService;
 
 @WebMvcTest(UserController.class)
 public class UserControllerTest {

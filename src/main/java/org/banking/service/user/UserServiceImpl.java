@@ -5,14 +5,14 @@
 package org.banking.service.user;
 
 import org.banking.service.model.*;
-import org.banking.service.util.ValidationUtil;
-import org.banking.service.util.ErrorUtil;
-import org.banking.service.account.AccountService;
+import org.banking.service.service.UserService;
+import org.banking.service.service.AccountService;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
-import java.util.*;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.UUID;
 
 /**
  * Service implementation for user management.

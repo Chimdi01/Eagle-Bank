@@ -1,6 +1,7 @@
-package org.banking.service.account;
+package org.banking.service.controller;
 
 import org.banking.service.model.*;
+import org.banking.service.service.AccountService;
 import org.banking.service.util.ErrorUtil;
 import org.banking.service.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;

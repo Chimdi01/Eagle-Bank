@@ -1,4 +1,4 @@
-package org.banking.service.transactions;
+package org.banking.service.service;
 
 import org.banking.service.model.*;
 

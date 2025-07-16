@@ -2,7 +2,7 @@
  * UserService interface for user management operations.
  * Defines methods for creating, fetching, and updating users.
  */
-package org.banking.service.user;
+package org.banking.service.service;
 
 import org.banking.service.model.*;
 

@@ -1,9 +1,10 @@
-package org.banking.service.user;
+package org.banking.service.controller;
 
 import org.banking.service.model.*;
+import org.banking.service.service.UserService;
 import org.banking.service.util.ErrorUtil;
 import org.banking.service.util.ValidationUtil;
-import org.banking.service.account.AccountService;
+import org.banking.service.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
